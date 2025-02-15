@@ -1,4 +1,5 @@
 const esbuild = require("esbuild");
+const { copy } = require('esbuild-plugin-copy');
 
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
@@ -38,9 +39,16 @@ async function main() {
 		external: ['vscode'],
 		logLevel: 'silent',
 		plugins: [
+			copy({
+				from: 'src/resources/*',
+				to: 'dist/resources',
+			}),
 			/* add to the end of plugins array */
 			esbuildProblemMatcherPlugin,
 		],
+
+		assetNames: 'src/resources/[name]-[hash]',
+		loader: { '.png': 'file', '.svg': 'file' },
 	});
 	if (watch) {
 		await ctx.watch();
