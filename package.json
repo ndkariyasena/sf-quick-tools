@@ -63,8 +63,40 @@
       {
         "command": "sf-quick-tools.helloWorld",
         "title": "Hello World"
-      }
-    ]
+      },
+			{
+				"command": "sfqt.refreshOrgs",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/dark/refresh.svg",
+					"dark": "resources/light/refresh.svg"
+				}
+			},
+			{
+				"command": "sfqt.deploy",
+				"title": "Deploy",
+				"icon": {
+					"light": "resources/dark/push.svg",
+					"dark": "resources/light/push.svg"
+				}
+			}
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "sfqt.refreshOrgs",
+          "when": "view == sfqt-scratchOrgs",
+					"group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+					"command": "sfqt.deploy",
+					"when": "sfqtScratchOrgs && view == sfqt-scratchOrgs && viewItem == scratchOrgs",
+					"group": "inline"
+				}
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

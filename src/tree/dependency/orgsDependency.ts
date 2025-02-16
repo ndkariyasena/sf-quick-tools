@@ -3,9 +3,10 @@ import * as path from 'path';
 import { OrgDetails } from '../../sfqtTypes';
 
 export default class OrgDependency extends vscode.TreeItem {
+	contextValue: string = '';
 	iconName: string = 'disconnected';
-	tooltip: string;
-	description: string;
+	tooltip: string = '';
+	description: string = '';
 
 	iconPath = {
 		dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'light', `${this.iconName}.svg`)),
@@ -20,18 +21,23 @@ export default class OrgDependency extends vscode.TreeItem {
 	) {
 		super(label, collapsibleState);
 
-		this.tooltip = `${this.label}-${this.orgType}`;
+		this.contextValue = orgType;
+		
+		this.updateOrgDetails(orgDetails);
+		this.updateIconPath();
+	}
+
+	updateOrgDetails(orgDetails: OrgDetails): void {
 		this.orgDetails = orgDetails;
 
-		const { iconName, username, _id, orgId } = this.orgDetails;
+		const { iconName, username, _id, orgId, tooltip } = this.orgDetails;
 
+		this.tooltip = tooltip || `${this.label}-${this.orgType}`;
 		this.id = (_id ?? orgId) as string;
 		this.description = username;
 		if (iconName) {
 			this.iconName = iconName as string;
 		}
-		
-		this.updateIconPath();
 	}
 
 	updateIconPath() {

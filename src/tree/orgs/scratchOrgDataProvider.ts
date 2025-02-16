@@ -12,11 +12,21 @@ export default class ScratchOrgDataProvider extends TreeDataProvider {
 		this.sfExecutor = sfCommandExecutor;
 	}
 
+	registerCommands(): void {
+		vscode.commands.registerCommand('sfqt.deploy', this.deployOrg.bind(this));
+	}
+
+	setContext(): void {
+		vscode.commands.executeCommand('setContext', 'sfqtScratchOrgs', true);
+	}
+
 	modifyOrgData(element: OrgDetails): OrgDetails {
 		if (element.isDefaultUsername && element.defaultMarker) {
 			element.iconName = 'mainScratchOrg';
 		}
 		element._id = `${element.alias}-${element.username}`;
+
+		element.tooltip = `Expires: ${element.expirationDate}`;
 
 		return element;
 	}
@@ -43,5 +53,9 @@ export default class ScratchOrgDataProvider extends TreeDataProvider {
 		const treeDeps: OrgDependency[] = await this.populateOrgTree(devOrgs, vscode.TreeItemCollapsibleState.None);
 
 		return Promise.resolve(treeDeps);
+	}
+
+	async deployOrg(org: OrgDependency): Promise<void> {
+		vscode.window.showInformationMessage(`Deploying ${org.label}`);
 	}
 }

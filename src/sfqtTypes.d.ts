@@ -11,6 +11,7 @@ type OrgDetails = {
 	orgId: string;
 	instanceUrl: string;
 	iconName?: string;
+	tooltip?: string;
 } & {
 	[key: string]: string | number | boolean;
 }

@@ -20,8 +20,22 @@ export default abstract class TreeDataProvider
 		this._onDidChangeTreeData.fire(undefined);
 	}
 
+	protected registerProviderCommands(): void {
+		this.registerCommands();
+		this.setContext();
+	}
+
 	abstract getTreeItem(element: vscode.TreeItem): vscode.TreeItem;
 	abstract getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]>;
+	abstract modifyOrgData(element: OrgDetails): OrgDetails;
+	
+	protected registerCommands(): void {
+		return;
+	}
+
+	protected setContext(): void {
+		return;
+	}
 
 	protected get treeData(): vscode.TreeItem[] {
 		return this._treeData;
@@ -40,8 +54,6 @@ export default abstract class TreeDataProvider
 		org.description = `${org.alias} - ${org.username}`;
 		return org;
 	};
-
-	abstract modifyOrgData(element: OrgDetails): OrgDetails;
 
 	protected setOrgAccessStatus = (
 		org: OrgDetails
@@ -78,6 +90,10 @@ export default abstract class TreeDataProvider
 		}
 
 		this.treeData = treeDeps;
+
+		if (treeDeps.length > 0) {
+			this.registerProviderCommands();
+		}
 
 		return treeDeps;
 	};

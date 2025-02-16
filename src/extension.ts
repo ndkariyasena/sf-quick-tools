@@ -22,10 +22,15 @@ export async function activate(context: vscode.ExtensionContext) {
 	try {
 		sfCommandExecutor = await getAvailableSfExecutor(isNvmAvailable);
 
+		const scratchOrgsProvider = new ScratchOrgDataProvider(sfCommandExecutor);
+
 		// Register the custom tree
-		vscode.window.registerTreeDataProvider('sfqt-scratchOrgs', new ScratchOrgDataProvider(sfCommandExecutor));
+		vscode.window.registerTreeDataProvider('sfqt-scratchOrgs', scratchOrgsProvider);
 		vscode.window.registerTreeDataProvider('sfqt-sandboxes', new SandboxDataProvider(sfCommandExecutor));
 		vscode.window.registerTreeDataProvider('sfqt-devHubs', new DevHubDataProvider(sfCommandExecutor));
+
+		
+		vscode.commands.registerCommand('sfqt.refreshOrgs', () => scratchOrgsProvider.refresh());
 	} catch (error) {
 		console.error('No Salesforce CLI found');
 		sfqtActive = false;

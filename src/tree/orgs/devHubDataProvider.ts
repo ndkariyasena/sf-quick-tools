@@ -17,6 +17,7 @@ export default class DevHubDataProvider extends TreeDataProvider {
 			element.iconName = 'mainDevHub';
 		}
 		element._id = `${element.alias}-${element.username}`;
+		element.tooltip = `Status: ${element.connectedStatus}`;
 
 		return element;
 	}

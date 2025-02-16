@@ -14,6 +14,7 @@ export default class SandboxDataProvider extends TreeDataProvider {
 
 	modifyOrgData(element: OrgDetails): OrgDetails {
 		element._id = `${element.alias}-${element.username}`;
+		element.tooltip = `Status: ${element.connectedStatus}`;
 		return element;
 	}
 
