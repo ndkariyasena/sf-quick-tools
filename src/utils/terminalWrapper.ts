@@ -1,4 +1,4 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 type TerminalExecutorResult = {
 	output: string | undefined;
@@ -11,7 +11,7 @@ export const terminalExecutor = async (
 ): Promise<TerminalExecutorResult> => {
 	return new Promise<TerminalExecutorResult>(async (resolve, reject) => {
 		const terminal = vscode.window.createTerminal({
-			name: "SF Quick Tools", // Just a name for the terminal
+			name: 'SF Quick Tools', // Just a name for the terminal
 			hideFromUser: true // This is the key: Hide the terminal
 		});
 
@@ -27,13 +27,13 @@ export const terminalExecutor = async (
 
 		const regex = outputRegex ? new RegExp(outputRegex) : undefined;
 		let outputMatched = false;
-		let terminalResult = "";
+		let terminalResult = '';
 
 		for await (const chunk of terminalStream) {
 			terminalResult += chunk;
 
 			if (regex) {
-				for (const line of chunk.split("\n")) {
+				for (const line of chunk.split('\n')) {
 					const simplifiedLine = line.trim().replace(/\r|\t/g, '');
 					if (regex.test(simplifiedLine)) {
 						outputMatched = true;
@@ -65,7 +65,7 @@ async function waitForShellIntegration(
 		() =>
 			reject(
 				new Error(
-					"Could not run terminal command: shell integration is not enabled"
+					'Could not run terminal command: shell integration is not enabled'
 				)
 			),
 		timeout
