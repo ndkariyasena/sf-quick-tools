@@ -25,25 +25,78 @@
         {
           "id": "sfqt-activity-bar",
           "title": "Salesforce Quick Tools",
-          "icon": "resources/activity-bar-icon_white.svg"
+          "icon": "resources/activity-bar-icon_white.svg",
+          "iconDark": "resources/activity-bar-icon.svg",
+          "iconLight": "resources/activity-bar-icon_white.svg"
         }
       ]
     },
     "views": {
       "sfqt-activity-bar": [
         {
-          "id": "SFQuickToolsOrgs",
-          "name": "Salesforce Quick Tools",
-          "when": "sfqtActive"
+          "id": "sfqt-scratchOrgs",
+          "name": "Scratch Orgs",
+          "when": "sfqtActive",
+          "contextualTitle": "Scratch Orgs"
+        },
+        {
+          "id": "sfqt-sandboxes",
+          "name": "Sandbox Explorer",
+          "when": "sfqtActive",
+          "contextualTitle": "Sandbox Explorer"
+        },
+        {
+          "id": "sfqt-devHubs",
+          "name": "Dev Hubs Explorer",
+          "when": "sfqtActive",
+          "contextualTitle": "Dev Hubs Explorer"
         }
-      ]
+      ],
+			"explorer": [
+				{
+					"id": "scratchOrgs",
+					"name": "Scratch Orgs"
+				}
+			]
     },
     "commands": [
       {
         "command": "sf-quick-tools.helloWorld",
         "title": "Hello World"
-      }
-    ]
+      },
+			{
+				"command": "sfqt.refreshOrgs",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/dark/refresh.svg",
+					"dark": "resources/light/refresh.svg"
+				}
+			},
+			{
+				"command": "sfqt.deploy",
+				"title": "Deploy",
+				"icon": {
+					"light": "resources/dark/push.svg",
+					"dark": "resources/light/push.svg"
+				}
+			}
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "sfqt.refreshOrgs",
+          "when": "view == sfqt-scratchOrgs",
+					"group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+					"command": "sfqt.deploy",
+					"when": "sfqtScratchOrgs && view == sfqt-scratchOrgs && viewItem == scratchOrgs",
+					"group": "inline"
+				}
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -56,7 +109,7 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "check-types": "tsc --noEmit",
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "test": "vscode-test"
   },
   "devDependencies": {

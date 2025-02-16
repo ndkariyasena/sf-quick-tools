@@ -1,51 +1,48 @@
-import { exec } from "child_process";
-import { promisify } from "util";
-import SfDxExecutor from "../executor/sfdxExecutor";
-import SfExecutor from "../executor/sfExecutor";
-import { terminalExecutor } from "../executor/terminalWrapper";
-import SfCommander from "../structure/sfCommander";
+import { exec } from 'child_process';
+import { promisify } from 'util';
+import { terminalExecutor } from './terminalWrapper';
+import {SfDxExecutor, SfExecutor } from '../executor';
+import SfCommander from '../structure/sfCommander';
 
 export const execute = promisify(exec);
 
 export const isNvmInstalled = async (): Promise<boolean> => {
-	return await terminalExecutor("nvm --version", "\\d+\\.\\d+\\.\\d+")
+	return await terminalExecutor('nvm --version', '\\d+\\.\\d+\\.\\d+')
 		.then(({ outputMatched }) => outputMatched)
 		.catch(() => false);
 };
 
 export const getAvailableSfExecutor = async (isNvmAvailable = false): Promise<SfCommander> => {
-	const sfVersionRegex = "^@salesforce\\/cli\\/\\d+\\.\\d+\\.\\d+";
-	const sfdxVersionRegex = "^sfdx-cli\\/\\d+\\.\\d+\\.\\d+";
+	const sfVersionRegex = '^@salesforce\\/cli\\/\\d+\\.\\d+\\.\\d+';
+	const sfdxVersionRegex = '^sfdx-cli\\/\\d+\\.\\d+\\.\\d+';
 
 	let sfExecutor: SfCommander | null = null;
 
-	// await bashTest();
-
-	return await terminalExecutor("sf --version", sfVersionRegex)
+	return await terminalExecutor('sf --version', sfVersionRegex)
 		.then(({ outputMatched }) => {
 			if (outputMatched) {
-				console.debug("[SfQT] sf CLI is installed");
+				console.debug('[SfQT] sf CLI is installed');
 				sfExecutor = new SfExecutor(isNvmAvailable);
 
 				return sfExecutor;
 			} else {
-				throw new Error("sf CLI not found");
+				throw new Error('sf CLI not found');
 			}
 		})
 		.catch(async () => {
-			return await terminalExecutor("sfdx --version", sfdxVersionRegex)
+			return await terminalExecutor('sfdx --version', sfdxVersionRegex)
 				.then(({ outputMatched }) => {
 					if (outputMatched) {
-						console.debug("[SfQT] sfdx CLI is installed");
+						console.debug('[SfQT] sfdx CLI is installed');
 						sfExecutor = new SfDxExecutor(isNvmAvailable);
 
 						return sfExecutor;
 					} else {
-						throw new Error("sfdx CLI not found");
+						throw new Error('sfdx CLI not found');
 					}
 				})
 				.catch(() => {
-					throw new Error("Neither sf nor sfdx CLI is installed");
+					throw new Error('Neither sf nor sfdx CLI is installed');
 				});
 		});
 };
