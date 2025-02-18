@@ -68,16 +68,16 @@
 				"command": "sfqt.refreshOrgs",
 				"title": "Refresh",
 				"icon": {
-					"light": "resources/dark/refresh.svg",
-					"dark": "resources/light/refresh.svg"
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
 				}
 			},
 			{
 				"command": "sfqt.deploy",
 				"title": "Deploy",
 				"icon": {
-					"light": "resources/dark/push.svg",
-					"dark": "resources/light/push.svg"
+					"light": "resources/light/push.svg",
+					"dark": "resources/dark/push.svg"
 				}
 			}
     ],

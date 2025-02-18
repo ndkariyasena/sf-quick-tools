@@ -1,8 +1,57 @@
 import * as vscode from 'vscode';
+import { TerminalName } from './constants';
 
 type TerminalExecutorResult = {
 	output: string | undefined;
 	outputMatched: boolean;
+};
+
+let _terminal: vscode.Terminal | undefined;
+
+export const createTerminal = async (name = TerminalName, hideFromUser = false, options = {}): Promise<vscode.Terminal> => {
+	return new Promise<vscode.Terminal>(async (resolve, reject) => {
+		if (_terminal) {
+			resolve(_terminal);
+		} else  {
+			const terminal = vscode.window.createTerminal({
+				name,
+				hideFromUser,
+				...options,
+			});
+
+			try {
+				await waitForShellIntegration(terminal, 5000);
+				_terminal = terminal;
+				resolve(terminal);
+			} catch (e) {
+				vscode.window.showErrorMessage((e as Error).message);
+				reject((e as Error).message);
+			}
+		}
+	});
+};
+
+export const executeTerminalCommand	= async (command: string): Promise<string | undefined> => {
+	return new Promise<string | undefined>(async (resolve, reject) => {
+		const terminal = await createTerminal(TerminalName, true);
+
+		// const execution = terminal.sendText(command);
+		const execution = terminal.shellIntegration!.executeCommand(command);
+		const terminalStream = execution.read();
+
+		let output = '';
+
+		for await (const chunk of terminalStream) {
+			output += chunk;
+		}
+
+		resolve(output);
+	});
+};
+
+export const sendTextToTerminal = async (text: string): Promise<void> => {
+	const terminal = await createTerminal(TerminalName, true);
+	terminal.sendText(text);
 };
 
 export const terminalExecutor = async (

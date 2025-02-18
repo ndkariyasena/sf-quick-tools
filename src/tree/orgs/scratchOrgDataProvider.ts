@@ -22,7 +22,8 @@ export default class ScratchOrgDataProvider extends TreeDataProvider {
 
 	modifyOrgData(element: OrgDetails): OrgDetails {
 		if (element.isDefaultUsername && element.defaultMarker) {
-			element.iconName = 'mainScratchOrg';
+			element.iconName = 'activeScratchOrg';
+			element.activeScratchOrg = true;
 		}
 		element._id = `${element.alias}-${element.username}`;
 
@@ -38,11 +39,7 @@ export default class ScratchOrgDataProvider extends TreeDataProvider {
 		return org;
 	};
 
-	getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
-		return element;
-	}
-
-	async getChildren(element?: vscode.TreeItem): Promise<OrgDependency[]> {
+	async getChildren(element?: OrgDependency): Promise<OrgDependency[]> {
 
 		if (element) {
 			return Promise.resolve([]);
@@ -56,6 +53,39 @@ export default class ScratchOrgDataProvider extends TreeDataProvider {
 	}
 
 	async deployOrg(org: OrgDependency): Promise<void> {
-		vscode.window.showInformationMessage(`Deploying ${org.label}`);
+		const { id, label } = org;
+		const treeDeps: OrgDependency[] = [ ...this.treeData ];
+		const selectedTreeDep = treeDeps.find((treeDep) => treeDep.id === id);
+
+		if (!selectedTreeDep) {
+			vscode.window.showErrorMessage(`Something went wrong. Could not find ${label}`);
+			return;
+		}
+
+		let continueProcess = true;
+
+		if (!selectedTreeDep.orgDetails.activeScratchOrg) {
+			continueProcess = false;
+			vscode.window.showWarningMessage(`"${label}" is not an active scratch org.`);
+
+			const result = await vscode.window.showInputBox({
+				title: 'This is not the active scratch org. Do you want to deploy it?',
+				prompt: 'Please type "Yes" or "No"',
+				placeHolder: 'Yes / No',
+			});
+
+			continueProcess = result && result.toUpperCase().match(/(Y)+(ES)?/g) ? true : false;
+		}
+
+		if (!continueProcess) {
+			vscode.window.showInformationMessage('Deploy process cancelled.');
+			return;
+		}
+
+		vscode.window.showInformationMessage(`Deploying ${label}`);
+
+		await this.sfExecutor.deployScratchOrg(selectedTreeDep.orgDetails.username);
+
+		vscode.window.showInformationMessage(`Deployment process completed for ${label}`);
 	}
 }

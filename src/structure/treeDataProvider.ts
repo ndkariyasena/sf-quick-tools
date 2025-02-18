@@ -12,9 +12,12 @@ export default abstract class TreeDataProvider
 	readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | undefined> =
 		this._onDidChangeTreeData.event;
 
-	private _treeData: vscode.TreeItem[] = [];
+	private _treeData: OrgDependency[] = [];
 	protected readonly ordType: OrgTypes = 'scratchOrgs';
 	protected sfExecutor!: SfCommander;
+
+	abstract getChildren(element?: OrgDependency): Promise<OrgDependency[]>;
+	abstract modifyOrgData(element: OrgDetails): OrgDetails;
 
 	refresh(): void {
 		this._onDidChangeTreeData.fire(undefined);
@@ -25,9 +28,9 @@ export default abstract class TreeDataProvider
 		this.setContext();
 	}
 
-	abstract getTreeItem(element: vscode.TreeItem): vscode.TreeItem;
-	abstract getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]>;
-	abstract modifyOrgData(element: OrgDetails): OrgDetails;
+	getTreeItem(element: OrgDependency): OrgDependency {
+		return element;
+	};
 	
 	protected registerCommands(): void {
 		return;
@@ -37,11 +40,11 @@ export default abstract class TreeDataProvider
 		return;
 	}
 
-	protected get treeData(): vscode.TreeItem[] {
+	protected get treeData(): OrgDependency[] {
 		return this._treeData;
 	}
 
-	protected set treeData(treeData: vscode.TreeItem[]) {
+	protected set treeData(treeData: OrgDependency[]) {
 		this._treeData = treeData;
 	}
 

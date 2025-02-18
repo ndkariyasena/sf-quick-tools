@@ -18,11 +18,7 @@ export default class SandboxDataProvider extends TreeDataProvider {
 		return element;
 	}
 
-	getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
-		return element;
-	}
-
-	async getChildren(element?: vscode.TreeItem): Promise<OrgDependency[]> {
+	async getChildren(element?: OrgDependency): Promise<OrgDependency[]> {
 
 		if (element) {
 			return Promise.resolve([]);
