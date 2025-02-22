@@ -1,0 +1,1 @@
+export const TerminalName = 'SF Quick Tools';

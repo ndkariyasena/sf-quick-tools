@@ -1,13 +1,28 @@
 import * as vscode from 'vscode';
 import { execute } from '../utils/utils';
 import { OrgsList } from '../sfqtTypes';
+import Terminal from '../utils/terminal';
 
 /* This abstract class is a the blueprint for sfdx and sf CLI commands executor classes */
 export default abstract class SfCommander {
 	private isNvmAvailable: boolean = false;
+	private _terminal: Terminal | undefined;
 
 	constructor(isNvmAvailable: boolean) {
 		this.isNvmAvailable = isNvmAvailable;
+	}
+
+	private async createTerminal(): Promise<void> {
+		this._terminal = await Terminal.getInstance();
+
+		await this._terminal.isTerminalAvailable();
+	}
+
+	private async getTerminal(): Promise<Terminal | undefined> {
+		if (!this._terminal) {
+			await this.createTerminal();
+		}
+		return Promise.resolve(this._terminal);
 	}
 
 	private populateCliCommand(command: string): string {
@@ -58,5 +73,19 @@ export default abstract class SfCommander {
 
 	async listOrgs(): Promise<OrgsList> {
 		throw new Error('Method not implemented.');
+	}
+
+	async deployScratchOrg(orgName: string): Promise<string | undefined> {
+		throw new Error('Method not implemented.');
+	}
+
+	async executeInTerminal(command: string): Promise<string | undefined> {
+		const terminal = await this.getTerminal();
+
+		if (!terminal) {
+			throw new Error('Could not create terminal instance');
+		}
+
+		return await terminal.executeCommand(command);
 	}
 }

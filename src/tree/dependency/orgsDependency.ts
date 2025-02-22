@@ -7,16 +7,17 @@ export default class OrgDependency extends vscode.TreeItem {
 	iconName: string = 'disconnected';
 	tooltip: string = '';
 	description: string = '';
+	orgDetails: OrgDetails = {} as OrgDetails;
 
 	iconPath = {
-		dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'light', `${this.iconName}.svg`)),
-		light: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'dark', `${this.iconName}.svg`))
+		dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'dark', `${this.iconName}.svg`)),
+		light: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'light', `${this.iconName}.svg`))
 	};
 
 	constructor(
 		public readonly label: string,
 		private orgType: string,
-		private orgDetails: OrgDetails,
+		orgDetails: OrgDetails,
 		public readonly collapsibleState: vscode.TreeItemCollapsibleState
 	) {
 		super(label, collapsibleState);
@@ -42,8 +43,8 @@ export default class OrgDependency extends vscode.TreeItem {
 
 	updateIconPath() {
 		this.iconPath = {
-			dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'light', `${this.iconName}.svg`)),
-			light: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'dark', `${this.iconName}.svg`))
+			dark: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'dark', `${this.iconName}.svg`)),
+			light: vscode.Uri.file(path.join(__filename, '..', '..', 'resources', 'light', `${this.iconName}.svg`))
 		};
 	}
 }

@@ -6,4 +6,10 @@ export default class SfDxExecutor extends SfCommander {
 
 		return JSON.parse(orgs).result;
 	}
+
+	async deployScratchOrg(orgName: string) {
+		const response = await this.executeInTerminal(`sfdx force:source:push --target-org ${orgName}`);
+
+		return response;
+	}
 }

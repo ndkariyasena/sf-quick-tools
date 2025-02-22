@@ -12,6 +12,7 @@ type OrgDetails = {
 	instanceUrl: string;
 	iconName?: string;
 	tooltip?: string;
+	activeScratchOrg?: boolean;
 } & {
 	[key: string]: string | number | boolean;
 }

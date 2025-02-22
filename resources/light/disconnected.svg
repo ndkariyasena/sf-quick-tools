@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Pixodesk SVG (https://pixodesk.com) -->
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" text-rendering="geometricPrecision" shape-rendering="geometricPrecision" fill="none">
-  <path stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9,22L12.0005,19M15,16L12.0005,19M12.0005,19L9,16M12.0005,19L15,22"/>
-  <path stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M20,17.6073C21.4937,17.0221,23,15.6889,23,13C23,9,19.6667,8,18,8C18,6,18,2,12,2C6,2,6,6,6,8C4.3333,8,1,9,1,13C1,15.6889,2.5063,17.0221,4,17.6073"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" text-rendering="geometricPrecision" shape-rendering="geometricPrecision">
+  <path fill="#c5c5c5" d="M417.392,161.976L409.808,161.976C402.272,130.248,373.68,106.472,339.472,106.472C331.168,106.472,322.752,108.296,315.792,110.632C299.072,63.144,253.76,29.048,200.352,29.048C132.736,29.048,77.904,83.592,77.904,150.888C77.904,155.128,78.128,159.32,78.544,163.432C34.112,171.08,0,209.784,0,256.104C0,307.88,42.576,350.248,94.608,350.248L417.392,350.248C469.424,350.248,512,307.88,512,256.104C512,204.344,469.424,161.976,417.392,161.976z"/>
+  <ellipse fill="#dfa61b" cx="256" cy="345.496" rx="137.456" ry="137.456"/>
+  <path fill="#ffffff" d="M239.616,419.176C239.616,410.2,245.856,403.72,254.336,403.72C263.312,403.72,269.04,410.2,269.04,419.176C269.04,427.912,263.312,434.632,254.336,434.632C245.6,434.632,239.616,427.912,239.616,419.176zM245.84,383.544L242.352,263.896L266.272,263.896L262.784,383.544L245.84,383.544z"/>
 </svg>
